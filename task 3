@@ -1,0 +1,119 @@
+.data 
+name:     .space 300
+find:     .asciiz "e"
+replace:  .asciiz "o"
+temp: .asciiz ""
+.text
+
+main:
+li $v0,8
+la $a0,name
+li $a1,300
+syscall
+
+li $t0,0
+countn:
+lb $s0,replace($t0)
+beqz $s0,endcound
+addi $t0,$t0,1
+j countn
+
+endcound:
+li $t1,1
+bne $t0,$t1,start
+onechar:
+li $t0,0
+lb $s0,find($t0)
+lb $s2,replace($t0)
+onecharloop:
+lb $s1,name($t0)
+beqz $s1,print
+bne $s1,$s0,skip
+sb $s2,temp($t0)
+addi $t0,$t0,1
+j onecharloop
+skip:
+sb $s1,temp($t0)
+addi $t0,$t0,1
+j onecharloop
+
+
+start:
+li $t2,' '
+li $t0,0
+li $t1,0
+lfind:
+lb $s0,name($t0)
+lb $s1,find($t1)
+beqz $s1,count
+bne $s0,$s1,nextword
+addi $t0,$t0,1
+addi $t1,$t1,1
+j lfind
+
+nextword:
+li $t1,0
+move $t4,$t0
+loopnextword:
+lb $s0,name($t0)
+beqz $s0,print
+addi $t0,$t0,1
+beq $s0,$t2,lfind
+j loopnextword
+
+count:
+li $t3,0
+countloop:
+lb $s0,find($t3)
+beqz $s0,found
+addi $t3,$t3,1
+j countloop
+
+found:
+li $t1,0
+move $t4,$t0
+sub $t0,$t0,$t3
+foundloop:
+beq $t1,$t0,step2
+lb $s0,name($t1)
+sb $s0,temp($t1)
+addi $t1,$t1,1
+j foundloop
+
+step2:
+li $t0,0
+step2loop:
+lb $s0,replace($t0)
+beqz $s0,step3
+sb $s0,temp($t1)
+addi $t0,$t0,1
+addi $t1,$t1,1
+j step2loop
+
+step3:
+
+step3loop:
+lb $s0,name($t4)
+beqz $s0,for
+sb $s0,temp($t1)
+addi $t1,$t1,1
+addi $t4,$t4,1
+j step3loop
+
+for:
+li $t0,0
+do:
+lb $s0,temp($t0)
+beqz $s0,start
+
+sb $s0,name($t0)
+addi $t0,$t0,1
+j do
+
+print:
+li $v0,4
+la $a0,temp
+syscall 
+
+li $v0,10
+syscall 

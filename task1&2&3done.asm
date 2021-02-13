@@ -207,7 +207,7 @@ lb $s2,replace($t0)     #load the word that i want to replace it from s2 to t0
 onecharloop:
 lb $s1,parg($t0)    #load the value from t0 to s1
 beqz $s1,print     #branch to print when s1 equal zero or null
-bne $s1,$s0,skip3   #if s0==s1 branch to skip3
+bne $s1,$s0,skip3   #if s0 !=s1 branch to skip3
 sb $s2,target($t0)  #store the value in s2 in t0
 addi $t0,$t0,1   #add 1 to t0 (t0=t0+1)
 j onecharloop      #jump to function onecharloop
@@ -226,7 +226,7 @@ lfind:
 lb $s0,parg($t0)    #load the value in t0 to s0
 lb $s1,find($t1)    #load the value in t1 to s1
 beqz $s1,countz     #branch to countz when s1 is zero or null
-bne $s0,$s1,nextword    #if s1==s0 branch to nextword
+bne $s0,$s1,nextword    #if s1 !=s0 branch to nextword
 addi $t0,$t0,1         #add 1 to t0 (t0=t0+1)
 addi $t1,$t1,1        #add 1 to t1 (t1=t1+1)
 j lfind               #jump to function lfind
@@ -334,7 +334,7 @@ lb $s0,parg($t0)   #load t0 in s0
 lb $s1,target($t1)   #load t1 in s1
 beqz $s0,printt4    #branch to print4 to s0
 beqz $s1,endtarget    #barnch to endtarget when s1 is zero or null
-bne $s0,$s1,skp     #if s1==s0 branch to skp
+bne $s0,$s1,skp     #if s1 !=s0 branch to skp
 addi $t0,$t0,1     #add 1 to t0
 addi $t1,$t1,1    #add 1 to t1
 j cbu           #jump to function cbu
@@ -391,7 +391,7 @@ clear:
   li $t1,0       #load 0 to t1
   move $t0,$t6   #copy the value from t6 to t0
   li $t4,0    #load 0 to t4
-  bne $t7,$t4,finallyprin     #if t4==t7 branch to finallyprin
+  bne $t7,$t4,finallyprin     #if t4 !=t7 branch to finallyprin
   j splitwordd       #jump to function splitwordd
         
               
@@ -432,7 +432,7 @@ addi $t1,$t0,1   #add 1 to t0 and the result is t1 (t1=t0+1)
 forb:
 beq $t1,$t4,endofforb4   #if t4==t1 branch to endofforb4
 lb $s1,parg($t1)   #load t1 to s1
-bne  $s0,$s1,exit4   #if s1==s0 branch to exit4
+bne  $s0,$s1,exit4   #if s1 !=s0 branch to exit4
 addi $t3,$t3,1     #add 1 to t3
 sb $zero,parg($t1)   #store zero in t1
 addi $t1,$t1,1     #add 1 to t1
